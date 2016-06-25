@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
 
   validates_uniqueness_of :auth_token
 
+  has_many :products, dependent: :destroy
+
   def generate_authentication_token!
     begin
       self.auth_token = Devise.friendly_token
