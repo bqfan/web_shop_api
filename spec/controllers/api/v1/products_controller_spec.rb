@@ -8,14 +8,14 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
     end
 
     it "returns the user object into each product" do
-      products_response = json_response
+      products_response = json_response[:products]
       products_response.each do |product_response|
         expect(product_response[:user]).to be_present
       end
     end
 
     it "returns 4 records from the database" do
-      products_response = json_response
+      products_response = json_response[:products]
       expect(products_response.length).to eq(4)
     end
 
@@ -29,12 +29,12 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
     end
 
     it "has the user as a embeded object" do
-      product_response = json_response
+      product_response = json_response[:product]
       expect(product_response[:user][:email]).to eql @product.user.email
     end
 
     it "returns the information about a reporter on a hash" do
-      product_response = json_response
+      product_response = json_response[:product]
       expect(product_response[:name]).to eql @product.name
     end
 
@@ -51,7 +51,7 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
       end
 
       it "renders the json representation for the product record just created" do
-        product_response = json_response
+        product_response = json_response[:product]
         expect(product_response[:name]).to eql @product_attributes[:name]
       end
 
@@ -94,7 +94,7 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
       end
 
       it "renders the json representation for the updated user" do
-        product_response = json_response
+        product_response = json_response[:product]
         expect(product_response[:name]).to eql "An expensive TV"
       end
 
