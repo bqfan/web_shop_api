@@ -7,6 +7,13 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
       get :index
     end
 
+    it "returns the user object into each product" do
+      products_response = json_response
+      products_response.each do |product_response|
+        expect(product_response[:user]).to be_present
+      end
+    end
+
     it "returns 4 records from the database" do
       products_response = json_response
       expect(products_response.length).to eq(4)
@@ -19,6 +26,11 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
     before(:each) do
       @product = FactoryGirl.create :product
       get :show, id: @product.id
+    end
+
+    it "has the user as a embeded object" do
+      product_response = json_response
+      expect(product_response[:user][:email]).to eql @product.user.email
     end
 
     it "returns the information about a reporter on a hash" do
