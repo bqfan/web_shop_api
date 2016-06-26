@@ -22,6 +22,9 @@ RSpec.describe Product, type: :model do
 
   it { is_expected.to belong_to :user }
 
+  it { should have_many(:order_items) }
+  it { should have_many(:orders).through(:order_items) }
+
   describe ".filter_by_name" do
     before(:each) do
       @product1 = FactoryGirl.create :product, name: "A plasma TV"

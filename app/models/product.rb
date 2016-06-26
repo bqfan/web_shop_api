@@ -2,6 +2,8 @@ class Product < ActiveRecord::Base
 	paginates_per 25
 
 	belongs_to :user
+  has_many :order_items
+  has_many :orders, through: :order_items
 
   validates_presence_of :name, :price, :stock, :user_id
   validates_numericality_of :price, greater_than_or_equal_to: 0
