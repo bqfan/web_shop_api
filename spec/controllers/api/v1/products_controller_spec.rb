@@ -38,7 +38,7 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
         end
       end
 
-      it { should respond_with 200 }
+      it { is_expected.to respond_with 200 }
     end
 
     context "when product_ids parameter is sent" do
