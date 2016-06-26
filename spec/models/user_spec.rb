@@ -20,6 +20,7 @@ RSpec.describe User, type: :model do
   it { is_expected.to validate_uniqueness_of(:auth_token)}
 
   it { is_expected.to have_many(:products) }
+  it { is_expected.to have_many(:orders) }
 
   describe "#generate_authentication_token!" do
     it "generates a unique token" do
