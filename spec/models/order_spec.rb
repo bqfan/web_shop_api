@@ -13,18 +13,24 @@ RSpec.describe Order, type: :model do
   it { is_expected.to have_many(:order_items) }
   it { is_expected.to have_many(:products).through(:order_items) }
 
-	describe '#set_total!' do
-	  before(:each) do
-	    product_1 = FactoryGirl.create :product, price: 100
-	    product_2 = FactoryGirl.create :product, price: 85
+  describe '#set_total!' do
+    before(:each) do
+      product_1 = FactoryGirl.create :product, price: 100
+      product_2 = FactoryGirl.create :product, price: 85
 
-	    @order = FactoryGirl.build :order, product_ids: [product_1.id, product_2.id]
-	  end
+      order_item_1 = FactoryGirl.build :order_item, product: product_1, quantity: 3
+      order_item_2 = FactoryGirl.build :order_item, product: product_2, quantity: 15
 
-	  it "returns the total amount to pay for the products" do
-	    expect{@order.set_total!}.to change{@order.total}.from(0).to(185)
-	  end
-	end
+      @order = FactoryGirl.build :order
+
+      @order.order_items << order_item_1
+      @order.order_items << order_item_2
+    end
+
+    it "returns the total amount to pay for the products" do
+      expect{@order.set_total!}.to change{@order.total.to_f}.from(0).to(1575)
+    end
+  end
 
   describe "#build_order_items_with_product_ids_and_quantities" do
     before(:each) do

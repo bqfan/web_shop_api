@@ -8,9 +8,12 @@ class Order < ActiveRecord::Base
 
   before_validation :set_total!
 
-	def set_total!
-	  self.total = products.map(&:price).sum
-	end
+  def set_total!
+    self.total = 0
+    order_items.each do |order_item|
+      self.total += order_item.product.price * order_item.quantity
+    end
+  end
 
   def build_order_items_with_product_ids_and_quantities(product_ids_and_quantities)
     product_ids_and_quantities.each do |product_id_and_quantity|
