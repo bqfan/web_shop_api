@@ -10,6 +10,8 @@ RSpec.describe OrderItem, type: :model do
 
 	  it { is_expected.to belong_to :order }
 	  it { is_expected.to belong_to :product }
+	  it { is_expected.to respond_to :product_id }
+	  it { is_expected.to respond_to :quantity }
 	end
 end
 
