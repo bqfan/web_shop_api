@@ -1,19 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe Order, type: :model do
-	describe Order do
-	  let(:order) { FactoryGirl.build :order }
-	  subject { order }
+  let(:order) { FactoryGirl.build :order }
+  subject { order }
 
-	  it { is_expected.to respond_to(:total) }
-	  it { is_expected.to respond_to(:user_id) }
+  it { is_expected.to respond_to(:total) }
+  it { is_expected.to respond_to(:user_id) }
 
-	  it { is_expected.to validate_presence_of :user_id }
-	  it { is_expected.to belong_to :user }
+  it { is_expected.to validate_presence_of :user_id }
+  it { is_expected.to belong_to :user }
 
-	  it { is_expected.to have_many(:order_items) }
-	  it { is_expected.to have_many(:products).through(:order_items) }
-	end
+  it { is_expected.to have_many(:order_items) }
+  it { is_expected.to have_many(:products).through(:order_items) }
 
 	describe '#set_total!' do
 	  before(:each) do
@@ -28,4 +26,16 @@ RSpec.describe Order, type: :model do
 	  end
 	end
 
+  describe "#build_order_items_with_product_ids_and_quantities" do
+    before(:each) do
+      product_1 = FactoryGirl.create :product, price: 100, stock: 5
+      product_2 = FactoryGirl.create :product, price: 85, stock: 10
+
+      @product_ids_and_quantities = [[product_1.id, 2], [product_2.id, 3]]
+    end
+
+    it "builds 2 order items for the order" do
+      expect{order.build_order_items_with_product_ids_and_quantities(@product_ids_and_quantities)}.to change{order.order_items.size}.from(0).to(2)
+    end
+  end
 end
