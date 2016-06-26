@@ -1,6 +1,7 @@
 class Order < ActiveRecord::Base
   belongs_to :user
   validates_presence_of :user_id
+  validates_with EnoughProductsValidator
 
   has_many :order_items
   has_many :products, through: :order_items

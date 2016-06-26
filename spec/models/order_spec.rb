@@ -38,4 +38,27 @@ RSpec.describe Order, type: :model do
       expect{order.build_order_items_with_product_ids_and_quantities(@product_ids_and_quantities)}.to change{order.order_items.size}.from(0).to(2)
     end
   end
+
+  describe "#build_order_items_with_product_ids_and_quantities" do
+  end
+
+  describe "#valid?" do
+    before do
+      product_1 = FactoryGirl.create :product, price: 100, stock: 5
+      product_2 = FactoryGirl.create :product, price: 85, stock: 10
+
+
+      order_item_1 = FactoryGirl.build :order_item, product: product_1, quantity: 3
+      order_item_2 = FactoryGirl.build :order_item, product: product_2, quantity: 15
+
+      @order = FactoryGirl.build :order
+
+      @order.order_items << order_item_1
+      @order.order_items << order_item_2
+    end
+
+    it "becomes invalid due to insufficient products" do
+      expect(@order).to_not be_valid
+    end
+  end
 end
